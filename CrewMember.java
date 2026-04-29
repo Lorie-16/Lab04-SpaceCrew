@@ -13,12 +13,12 @@ public abstract class CrewMember {
      * @param name the name of the crew member
      * @param hp the starting health points; must not be negative
      * @param role the role of the crew member
-     * @throws IllegalArgumentException if hp is negative
+     * @throws IllegalArgumentException if name or role are invalid or hp is negative
      */
     public CrewMember(String name, int hp, String role) {
-        if (hp < 0) {
-            throw new IllegalArgumentException("HP cannot be negative");
-        }
+        validateString(name, "name");
+        validateString(role, "role");
+        validateHp(hp);
         this.name = name;
         this.hp = hp;
         this.role = role;
@@ -30,10 +30,13 @@ public abstract class CrewMember {
      * @param amount the amount of HP to add
      */
     public void recharge(int amount) {
-        if (amount > 0) {
-            hp += amount;
-            System.out.println(name + " recharged " + amount + " HP.");
+        if (amount <= 0) {
+            System.out.println(getName() + " cannot recharge by " + amount + " HP.");
+            return;
         }
+
+        hp += amount;
+        System.out.println(getName() + " recharged " + amount + " HP.");
     }
 
     /**
@@ -53,6 +56,7 @@ public abstract class CrewMember {
     }
 
     public void setName(String name) {
+        validateString(name, "name");
         this.name = name;
     }
 
@@ -61,9 +65,7 @@ public abstract class CrewMember {
     }
 
     public void setHp(int hp) {
-        if (hp < 0) {
-            throw new IllegalArgumentException("HP cannot be negative");
-        }
+        validateHp(hp);
         this.hp = hp;
     }
 
@@ -72,6 +74,19 @@ public abstract class CrewMember {
     }
 
     public void setRole(String role) {
+        validateString(role, "role");
         this.role = role;
+    }
+
+    private static void validateHp(int hp) {
+        if (hp < 0) {
+            throw new IllegalArgumentException("HP cannot be negative");
+        }
+    }
+
+    private static void validateString(String value, String fieldName) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException("" + fieldName + " cannot be empty");
+        }
     }
 }

@@ -15,7 +15,7 @@ public class Engineer extends CrewMember implements Repairable {
      */
     public Engineer(String name, int hp, String role, int repairSkill) {
         super(name, hp, role);
-        this.repairSkill = repairSkill;
+        setRepairSkill(repairSkill);
     }
 
     /**
@@ -43,6 +43,11 @@ public class Engineer extends CrewMember implements Repairable {
      */
     @Override
     public void repairShip(int amount) {
+        if (amount <= 0) {
+            System.out.println(getName() + " cannot repair with " + amount + " points.");
+            return;
+        }
+
         int totalRepair = amount + repairSkill;
         System.out.println(getName() + " repairs the ship for " + totalRepair + " points.");
     }
@@ -52,6 +57,9 @@ public class Engineer extends CrewMember implements Repairable {
     }
 
     public void setRepairSkill(int repairSkill) {
+        if (repairSkill < 0) {
+            throw new IllegalArgumentException("Repair skill cannot be negative");
+        }
         this.repairSkill = repairSkill;
     }
 }

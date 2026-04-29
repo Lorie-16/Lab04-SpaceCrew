@@ -15,7 +15,7 @@ public class Pilot extends CrewMember implements Boostable {
      */
     public Pilot(String name, int hp, String role, int shipSpeed) {
         super(name, hp, role);
-        this.shipSpeed = shipSpeed;
+        setShipSpeed(shipSpeed);
     }
 
     /**
@@ -50,6 +50,9 @@ public class Pilot extends CrewMember implements Boostable {
     }
 
     public void setShipSpeed(int shipSpeed) {
+        if (shipSpeed < 0) {
+            throw new IllegalArgumentException("Ship speed cannot be negative");
+        }
         this.shipSpeed = shipSpeed;
     }
 }

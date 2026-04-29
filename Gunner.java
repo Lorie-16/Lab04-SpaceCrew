@@ -17,8 +17,8 @@ public class Gunner extends CrewMember {
      */
     public Gunner(String name, int hp, String role, String weaponType, int ammo) {
         super(name, hp, role);
-        this.weaponType = weaponType;
-        this.ammo = ammo;
+        setWeaponType(weaponType);
+        setAmmo(ammo);
     }
 
     /**
@@ -30,6 +30,7 @@ public class Gunner extends CrewMember {
             System.out.println(getName() + " has no ammo left to fire.");
             return;
         }
+
         ammo--;
         System.out.println(getName() + " fires the " + weaponType + ". Ammo left: " + ammo + ".");
     }
@@ -49,6 +50,9 @@ public class Gunner extends CrewMember {
     }
 
     public void setWeaponType(String weaponType) {
+        if (weaponType == null || weaponType.trim().isEmpty()) {
+            throw new IllegalArgumentException("Weapon type cannot be empty");
+        }
         this.weaponType = weaponType;
     }
 
@@ -57,6 +61,9 @@ public class Gunner extends CrewMember {
     }
 
     public void setAmmo(int ammo) {
+        if (ammo < 0) {
+            throw new IllegalArgumentException("Ammo cannot be negative");
+        }
         this.ammo = ammo;
     }
 }
